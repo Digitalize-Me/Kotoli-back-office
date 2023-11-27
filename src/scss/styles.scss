@@ -1,0 +1,369 @@
+/* You can add global styles to this file, and also import other style files */
+// If you want to override variables do it here
+@import "variables";
+
+$enable-ltr: true;
+$enable-rtl: true;
+
+// Import styles with default layout.
+@import "@coreui/coreui/scss/coreui";
+
+// Import Chart.js custom tooltips styles
+@import "@coreui/chartjs/scss/coreui-chartjs";
+
+// perfect scrollbar theming for use with [perfectScrollbar] directive
+//@import '~perfect-scrollbar/css/perfect-scrollbar.css';
+
+@import "layout";
+
+// Some temp fixes
+@import "fixes";
+
+// Prism.js
+@import "examples";
+
+// If you want to add something do it here
+@import "custom";
+
+:root {
+  --mdc-typography-font-family: 'Poppins', sans-serif;
+}
+
+body {
+  font-family: var(--mdc-typography-font-family) !important;
+}
+html, body { height: 100%; font-weight:500; font-size:12px;}
+body { margin: 0; }
+html, body, p, h1, h2, h3, h4, h5, h6, span, .mat-mdc-body,.mat-mdc-table, 
+.mat-mdc-card, .mat-mdc-tab, .mat-mdc-dialog, .mat-mdc-stepper {
+  font-family: var(--mdc-typography-font-family) !important;
+
+   /*  font-family: 'Montserrat' !important; */
+}
+
+:root {
+    --meet-pr: #FF9953;
+    --meet-bl: #AAAFB5;
+    --meet-dark: #313131;
+    --meet-inscrit: #969696;
+    --go-gris: #1E1E1E;
+    --go-grey: #BFBCBF;
+    --vl-light: #F1CCF1;
+    --vl-white: #fff;
+    --go-aqua:#00FFFF;
+    --go-success:#49D46A; 
+    --go-yellow:#ffd61e;
+    --go-warning:#FF6600;
+    --go-in-progress:#0099ff;
+    --go-danger: #f86c6b;
+    --go-pink:#ff24ed;
+    --go-purple:#ad28a7;
+    --go-blue:#0099ff;
+    --go-silver: #0000008a;
+    --meet-black:#1E1E1E;
+  }
+
+  .nav-link{
+    font-size:13px !important;
+  }
+  *[class^='mat-mdc'], *[class*='mat-mdc']{
+    font-size: 13px !important;
+}
+
+  .text-pr{
+    color: var(--meet-pr) !important;
+  }
+  
+  .text-bl{
+    color: var(--meet-bl) !important;
+  }
+  .bg-pr{
+    background-color: #414141 !important;
+  }
+  
+  .bg-bl{
+    background-color: var(--meet-bl) !important;
+  }
+  .bg-dr{
+    background-color: var(--meet-dark) !important;
+  }
+  .bg-or{
+    background-color: var(--go-warning) !important;
+  }
+  .bg-inscrit{
+    background-color: var(--meet-inscrit) !important;
+  }
+  .border-pr{
+    border: solid 2px var(--meet-pr) !important;
+  }
+  .btn-logout{
+    background: var(--go-warning);
+    border: 0;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    color:#fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  }
+  .border-bl{
+    border: solid 2px var(--meet-bl) !important;
+  }
+  .fail-snackbar {
+    // z-index:9999;
+    --mdc-snackbar-container-color: #333333 !important;
+    --mdc-snackbar-supporting-text-color: #ff8080 !important;
+ }
+ .success-snackbar {
+      // z-index:9999;
+   
+       --mdc-snackbar-container-color: var(--meet-pr) !important;
+       --mdc-snackbar-supporting-text-color: #111 !important;
+       text-align: center;
+ }
+ .sidebar{
+  background-color: white !important;
+}
+.sidebar-brand{
+  padding: 10px !important;
+  background-color: #ffffff00 !important;
+}
+.sidebar-nav .nav-link {
+  color: var(--meet-black) !important;
+  font-weight:600 !important;
+  padding-top: 1.3rem !important;
+  padding-bottom: 1.3rem !important;
+  margin-bottom: 10px !important;
+}
+.sidebar-nav .nav-icon {
+  display:none;
+}
+.sidebar-nav .nav-link.active {
+  color: white !important;
+  border-left: solid red 4px !important;
+  background: var(--meet-pr) !important;
+}
+#sidebar .ps-content{
+    margin-top: auto !important;
+    margin-bottom: auto !important;
+    height: 100% !important;
+}
+.sidebar-nav  {
+  justify-content:center;
+  height:80%;
+}
+.sidebar-toggler{
+  display:none !important;
+}
+
+.state-block {
+  text-align: center !important;
+  border-radius:25px;
+  padding: 4px 12px;
+  font-size:11px;
+  font-weight:500;
+}
+.banni-block{
+    background-color: var(--go-danger);
+    color:#fff;
+}
+.actif-block{
+  background-color: var(--go-success);
+  color:#fff;
+}
+.inactif-block{
+  background-color: var(--go-warning);
+  color:#fff;
+}
+.inscrit-block{
+  background-color: var(--meet-inscrit);
+  color:#fff;
+}
+
+.popup-button{
+  background-color: var(--meet-pr) !important;
+  color:#000000;
+}
+
+
+.spinner-container{
+  width: 100%;
+  min-height: 300px;
+  flex-grow: 1;
+  background-color: #ffffff00;
+
+}
+.mat-mdc-progress-spinner circle {
+  stroke: var(--meet-pr) !important;
+}
+
+
+.searchList .mat-mdc-text-field-wrapper {
+  background-color: white;
+  border-radius: 10px !important;
+  height: 45px !important;
+
+}
+.searchList{
+  border-radius: 10px;
+}
+.searchList .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.card-title{
+  font-size: 26px !important;
+  font-family: "poppins" !important;
+  font-weight:600 !important;
+}
+.card-title-medium {
+  font-size: 20px !important;
+  font-family: "poppins" !important;
+  font-weight:600 !important;
+}
+.searchList .mat-mdc-form-field-subscript-wrapper{
+  display: none !important;
+}
+
+.close-button-snackbar{
+  float:right !important;
+  top:-24px;
+  right: 0px;
+}
+.input-row{
+  font-size: 13px;
+}
+.close-button{
+  position:absolute !important;
+  top:8px;
+  right: 8px;;
+}
+
+.close-icon {
+  transition: 1s ease-in-out;
+}
+
+.close-icon:hover {
+  transform: rotate(180deg);
+}
+
+
+
+.cdk-overlay-container {
+  z-index: 2000 !important;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+  padding: 0 4px 0 4px !important;
+}
+
+
+
+.dialog-responsive {
+  width: 50% ;
+  max-height: 530px !important;
+
+  
+}
+.dialog-responsive-large {
+  width: 80% ;
+  height: 80vh;
+  min-height: 60vh;
+  max-height: 90vh !important;
+  max-width: 90vw !important;
+}
+.mat-mdc-form-field{
+  font-size:12px !important;
+}
+.mat-mdc-form-field input::placeholder	{
+  font-size:12px !important;
+}
+
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.ln-1{
+  line-height: 1 !important;
+}
+
+.profile-picture {
+  height:50px;
+  width:50px;
+  margin: 5px 0px;
+}
+.profile-picture-gps {
+  height:30px;
+  width:30px;
+  border:solid 2px var(--meet-pr) ;
+  border-radius:50%;
+  margin: 5px;
+}
+.searchable input{
+  border: 0;
+  width: 90%
+  }
+  .searchable input:focus{
+
+      outline: none;
+  }
+
+  .mat-mdc-menu-content span{
+    font-size:14px !important;
+  }
+
+  .flex-center{
+    display:flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .pac-container{
+    width:100%;
+    z-index:99999;
+  }
+  .map-container{
+    height:100% !important;
+  }
+
+
+.mat-mdc-raised-button:disabled {
+    color: #d6d6d6 !important;
+}
+
+.mat-mdc-slide-toggle.mat-accent {
+  --mdc-switch-selected-focus-state-layer-color: var(--go-blue) !important;
+  --mdc-switch-selected-handle-color: var(--go-blue) !important;
+  --mdc-switch-selected-hover-state-layer-color: var(--go-blue) !important;
+  --mdc-switch-selected-pressed-state-layer-color: var(--go-blue) !important;
+  --mdc-switch-selected-focus-handle-color: var(--go-blue) !important;
+  --mdc-switch-selected-hover-handle-color: var(--go-blue) !important;
+  --mdc-switch-selected-pressed-handle-color: var(--go-blue) !important;
+  --mdc-switch-selected-focus-track-color: var(--go-blue) !important;
+  --mdc-switch-selected-hover-track-color: var(--go-blue) !important;
+  --mdc-switch-selected-pressed-track-color: var(--go-blue) !important;
+  --mdc-switch-selected-track-color: var(--go-blue) !important;
+}
+
+@media only screen and (max-width: 1170px) and (min-width:761px) {
+  .dialog-responsive {
+      width: 100%;
+  }
+  .dialog-responsive-large {
+      width: 80%;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  .dialog-responsive {
+      width: 100% !important;
+  }
+  .dialog-responsive-large {
+      width: 100% !important;
+  }
+}

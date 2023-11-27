@@ -1,0 +1,131 @@
+<div class="mt-4 d-flex justify-content-between align-items-center">
+    
+    <mat-form-field style="min-width:300px !important;" appearance="outline" class="searchList"> 
+        <mat-icon class="searchListIcon"matPrefix>search</mat-icon>
+        <input matInput placeholder="Chercher par (Nom/Numéro d'utilisateur)" #input  (keyup)="searchData(input.value)">
+    </mat-form-field>
+
+    <!-- <div class="btn-group meet-toggle">
+        <a href="#" class="btn active" aria-current="page">Tableau d'info</a>
+        <a href="#" routerLink="../activity" class="btn">Activité</a>
+    </div> -->
+</div>
+
+<div class="flex-grow-1 mt-3">
+    <mat-table class="bg-transparent mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="creationTime" matSortDirection="desc" >
+
+        <!--   <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+            <mat-cell class="text-prn" *matCellDef="let data">{{data.id}}</mat-cell>
+        </ng-container> -->
+        <ng-container matColumnDef="photo_url">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Profil</mat-header-cell>
+            <mat-cell *matCellDef="let data"  routerLink="../activity/{{data.id}}" >
+                <img
+                [src]="data.photo_url" class="cursor-pointer profile-picture"/>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="first_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</mat-header-cell>
+            <mat-cell class=""  routerLink="../activity/{{data.id}}" *matCellDef="let data">{{data.first_name}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="last_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Nom</mat-header-cell>
+            <mat-cell class=""  routerLink="../activity/{{data.id}}" *matCellDef="let data">{{data.last_name}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
+            <mat-cell *matCellDef="let data" class="p-0">
+                <span *ngIf="!data.status|| data.status.toLowerCase() =='inscrit'" class="h-100 w-100 inscrit-block">Inscrit</span>
+                <span *ngIf="data.status === 'actif'" class="w-100 h-100 actif-block">Actif</span>   
+                <span *ngIf="data.status === 'inactif'" class="w-100 h-100 inactif-block">Inactif</span>   
+                <span *ngIf="data.status === 'banni'" class="w-100 h-100 banni-block">Banni</span>  
+            </mat-cell>
+        </ng-container> 
+     
+        <ng-container matColumnDef="role">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Rôle</mat-header-cell>
+            <mat-cell *matCellDef="let data">
+                <span *ngIf="data.role === 'admin'" class="">Administrateur</span>
+                <span *ngIf="data.role === 'back-office'" class="">Administrateur</span>
+                <span *ngIf="data.role === 'user'" class="">Utilisateur</span>   
+            </mat-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="created_time.seconds">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Date d'inscription</mat-header-cell>
+            <mat-cell *matCellDef="let data">
+                <span *ngIf="data.created_time">{{ data.created_time.toMillis() | date: 'dd/MM/YYYY HH:mm'}}</span>
+                <span *ngIf="!data.created_time">{{ 'Non défini'}}</span>
+            </mat-cell>
+        </ng-container>
+        <!-- <ng-container matColumnDef="last_login_time.seconds">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Dernière connexion</mat-header-cell>
+            <mat-cell *matCellDef="let data">
+                <span *ngIf="data.last_login_time">{{ data.last_login_time.toMillis() | date: 'dd/MM/YYYY HH:mm'}}</span>
+                <span *ngIf="!data.last_login_time">{{ 'Non défini'}}</span>
+            </mat-cell>
+        </ng-container> -->
+        
+    
+        <ng-container matColumnDef="action" sticky>
+            <mat-header-cell class="header-cell-icon" *matHeaderCellDef>Action</mat-header-cell>
+            <mat-cell class="cell-icon cursor-pointer" *matCellDef="let data" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+                <mat-menu #menu="matMenu" yPosition="below">
+                    <ng-container *ngIf="data.role === 'user'">
+                        <button mat-menu-item routerLink="../activity/{{data.id}}">
+                            <mat-icon>info</mat-icon>
+                            <span>Afficher le détail</span>
+                        </button>
+                        <button *ngIf="data.status === 'inscrit' && data.identity_path" mat-menu-item (click)="validateIdentity(data)">
+                            <mat-icon>fingerprint</mat-icon>
+                            <span >Vérifiez l'identité</span>
+                          </button>
+                          <button *ngIf="data.status === 'inscrit' || data.status == 'actif' || data.status == 'inactif'" mat-menu-item (click)="bannir(data)">
+                            <mat-icon>block</mat-icon>
+                            <span >Bannir le compte</span>
+                          </button>
+                          <button *ngIf="data.status === 'banni' || data.status == 'inactif'" mat-menu-item (click)="activer(data)">
+                            <mat-icon>play_circle_outline</mat-icon>
+                            <span >Activer le compte</span>
+                          </button>
+                      
+                          <button *ngIf="data.status === 'inscrit' || data.status == 'actif' || data.status === 'banni'" mat-menu-item (click)="supprimer(data)">
+                            <mat-icon class="text-danger">delete_outline</mat-icon>
+                            <span >Supprimer le compte</span>
+                        </button> 
+                    </ng-container>
+                  
+                </mat-menu>
+            </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns" ></mat-header-row>
+        
+        
+    
+        <mat-row *matRowDef="let row; columns: displayedColumns"> 
+            
+        </mat-row>
+        <!-- [ngClass]="{'is-green': updatedRow && row.id == currentId && updatedRowStatus == 1, 
+        'is-red': updatedRow && row.id == currentId && updatedRowStatus == 2,
+        'is-grey': updatedRow && row.id == currentId && updatedRowStatus == 0,
+        'is-white': !updatedRow && row.id == currentId}" -->
+        
+    
+    </mat-table>
+    <div class="spinner-container d-flex justify-content-center align-items-center" *ngIf="loading$ | async">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div style="height:275px;" 
+    class="d-flex g-2 flex-column justify-content-center align-items-center" 
+    *ngIf="list && list.length == 0"> 
+        <mat-icon class="text-pr" style="font-size:50px; height:50px; width:50px;">info</mat-icon>
+        
+        <p class="m-0 fw-bold">Aucun résultat trouvé</p>
+      
+    </div>
+    <mat-paginator #pagin [pageSizeOptions]="[25,50,100]" showFirstLastButtons></mat-paginator>
+
+</div>

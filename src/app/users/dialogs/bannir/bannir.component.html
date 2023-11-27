@@ -1,0 +1,25 @@
+<div class="">
+   
+    <h2 mat-dialog-title class="card-title-medium text-left">Blocage du compte <span class="text-pr">{{user.first_name+" "+user.last_name}}</span></h2>
+    <button mat-icon-button class="close-button" mat-dialog-close>
+        <mat-icon class="close-icon text-pr" >close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content>
+    
+    <p>Etes-vous sûr de vouloir bloquer le compte utilisateur <span class="text-pr">{{(user.first_name+" "+user.last_name) | uppercase}}</span> ? Le blocage du compte restreindra l'accés à l'application.</p>
+   
+  </mat-dialog-content>
+
+  
+  
+  
+  <mat-dialog-actions class="d-flex justify-content-between">
+      <button cdkFocusInitial style="display: none"></button>
+      <button mat-stroked-button class="border-pr"(click)="close()" mat-dialog-close>Annuler</button>
+      <button mat-raised-button  (click)="save()" class="popup-button">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Confirmer
+      </button>
+  </mat-dialog-actions>

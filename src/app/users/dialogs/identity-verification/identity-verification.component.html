@@ -1,0 +1,49 @@
+<div class="">
+   
+    <h2 mat-dialog-title class="card-title-medium text-left">Validation de l'identité de l'utilisateur <span class="text-pr">{{user.first_name+" "+user.last_name}}</span></h2>
+    <button mat-icon-button class="close-button" mat-dialog-close>
+        <mat-icon class="close-icon text-pr" >close</mat-icon>
+    </button>
+</div>
+
+<mat-dialog-content>
+    
+ <!--    <p>Etes-vous sûr de vouloir suspendre le compte utilisateur <span class="text-pr">{{(user.first_name+" "+user.last_name) | uppercase}}</span> ? La susprension du compte restreindra l'accés à l'application.</p> -->
+
+ <div id="outerContainer" *ngIf="isPdf">
+    <div class="pdf-container flex-center">
+      <pdf-viewer
+        [src]="user.identity_path"
+        [rotation]="0"
+        [original-size]="false"
+        [show-all]="true"
+        [fit-to-page]="true"
+        [zoom]="1"
+        [zoom-scale]="'page-width'"
+        [stick-to-page]="false"
+        [render-text]="true"
+        [external-link-target]="'blank'"
+        [autoresize]="true"
+        [show-borders]="false"
+        style="width: 250px; height: 350px;"
+      ></pdf-viewer>
+    </div>
+  </div>
+  <div id="outerContainer" *ngIf="!isPdf">
+    <div class="pdf-container flex-center">
+    <img src="{{user.identity_path}}" alt="" width="250px" height="350px">
+    </div>
+  </div>
+  </mat-dialog-content>
+
+  
+  
+  
+  <mat-dialog-actions class="d-flex justify-content-between">
+      <button cdkFocusInitial style="display: none"></button>
+      <button mat-stroked-button class="border-pr"(click)="close()" mat-dialog-close>Annuler</button>
+      <button mat-raised-button  (click)="save()" class="bg-pr">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Confirmer l'identité
+      </button>
+  </mat-dialog-actions>

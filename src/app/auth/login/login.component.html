@@ -1,0 +1,76 @@
+
+<h3 class="auth-headers mt-2 text-pr">Authentifiez-vous</h3>
+<form class="auth-form" [formGroup]="loginForm" (ngSubmit)="loginForm.valid && onSubmit()" novalidate>
+  <div class="px-4">  
+   
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-icon matPrefix class="text-pr">
+        mail_outline
+      </mat-icon>
+        <input id="email"
+               matInput
+               autocomplete="email"
+               formControlName="email"
+               placeholder="Saisir votre Email" />
+        <mat-error *ngIf="f.email.errors && f.email.touched">
+          <span *ngIf="f.email.errors.required">L'Email est requis</span>
+          <span *ngIf="f.email.errors.pattern">Veuillez saisir une adresse Email valide</span>
+        </mat-error>
+        <mat-error *ngIf="f.email.errors?.serverError">
+          {{ f.email.errors?.serverError }}
+        </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-icon  matPrefix class="material-icons-outlined text-pr full-width" >
+        lock
+      </mat-icon>
+        <input id="password"
+               matInput
+               autocomplete="current-password"
+               formControlName="password"
+             
+               placeholder="Saisir votre mot de passe"
+               [type]="hide ? 'password':'text'" />
+          <mat-icon matSuffix (click)="hide = !hide">
+            {{hide ? 'visibility' : 'visibility_off'}}
+          </mat-icon>
+
+          <mat-error *ngIf="f.password.errors && f.password.touched">
+            <span *ngIf="f.password.errors.required">Le Mot de passe est requis</span>
+            <span *ngIf="f.password.errors.minlength">Le Mot de passe doit être composé d'en moins 6 caractères</span>
+          </mat-error>
+
+          <mat-error *ngIf="f.password.errors?.serverError">
+            {{ f.password.errors?.serverError }}
+          </mat-error>
+      </mat-form-field>
+      <div class="d-flex justify-content-between row">
+        <div class="col-md-6 col-sm-12">
+         <!--  <label class="mt-2 switch switch-pill switch-warning "> 
+            <input type="checkbox" checked="" class="switch-input">
+            <span class="switch-slider"></span>
+          </label> -->
+          <mat-slide-toggle
+          class="example-margin"
+          [checked]="true">
+            Se souvenir de moi
+          </mat-slide-toggle>
+         <!--  <label class="ml-1"style="margin-top: 11px;font-size:0.9em;">Se souvenir de moi</label> -->
+        </div>
+       <div class="col-md-6 col-sm-12">
+        <label class="ml-2 w-100" style="text-align:right;font-size:1em;"><a routerLink="../forgetPassword" class="text-pr">Mot de passe oublié ?</a></label>
+       </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center" style="margin-top:40px;">
+        
+        <button mat-raised-button type="submit" 
+              class="auth-btn"
+              style="width:50%;"
+              [disabled]="!loginForm.valid">Connexion
+              <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>  
+        </button>
+    </div>
+</form>
+

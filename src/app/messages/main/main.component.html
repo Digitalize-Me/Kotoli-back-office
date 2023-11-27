@@ -1,0 +1,116 @@
+<div class="h-100 d-flex flex-column pt-3">
+    
+    <div class="row mx-1 header-bar">
+        <div class="px-0 col-md-4 col-sm-12">
+            <div class="chat-list-bar d-flex align-items-center justify-content-between">
+                <input [(ngModel)]="searchTerm" (input)="filterChats()" placeholder="Toutes les conversations" class="mb-0 text-white">
+                <mat-icon class="text-white">search</mat-icon>
+            </div>
+        </div>
+        <div class="px-0 col-md-8 col-sm-12">
+            <div class="chat-discussion-bar d-flex align-items-center justify-content-between">
+                <ng-container *ngIf="currentChat">
+                    <img src="{{currentChat?.user?.photo_url}}" alt="" class="chat-user-pic">
+                    <div class="flex-grow-1 px-2">
+                        <h4 class="mb-0 text-white">{{currentChat?.user?.first_name}} {{currentChat?.user?.last_name}}</h4>
+                        <p class="lastLogin mb-0">
+                            <span>Vu pour la dernière fois : il y a <span class="orange-text">{{ currentChat?.user?.last_login_time?.toMillis() | customDate }}</span>  |  </span>
+                            Dernière connexion : {{currentChat?.user?.last_login_time?.toMillis() | date: "dd/MM/yyyy HH:mm"}}
+                        </p>
+                    </div>
+                    
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="mx-1 row chat-widget h-100">
+        <div class="spinner-container d-flex justify-content-center align-items-center" *ngIf="loading$ | async">
+            <mat-spinner></mat-spinner>
+        </div>
+        <div class="px-0 col-md-4 col-sm-12 d-flex flex-column" style="max-height:100%; overflow-y:hidden;">
+            <div class="spinner-container d-flex justify-content-center align-items-center" *ngIf="isChatListLoading">
+                <mat-spinner></mat-spinner>
+            </div>
+            <ng-container *ngIf="!isChatListLoading">
+                <div class="chat-list bg-pr flex-grow-1" *ngIf="chats && chats.length > 0">
+                    <div
+                    [ngClass]="{
+                        'unread-message': item.isSeen === false || !item.isSeen,
+                        'selected-conversation': currentChat && currentChat.id === item.id}"
+                     class="chat-list-item" 
+                     *ngFor="let item of filteredChats" 
+                     (click)="setChatSubject(item, true)">
+                        <img src="{{item?.user?.photo_url}}" alt="" class="chat-user-pic">
+                        <div class="chat-content">
+                            <h4 class="mb-0 fw-bold">{{item?.user?.first_name}} {{item?.user?.last_name}}</h4>
+                            <p class="mb-0 ">{{item?.last_message | slice:0:60}}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p class="mb-0">{{item?.last_message_time.toMillis() | customDate}}</p>
+                            <div *ngIf="item?.isSeen === false" class="ms-2 bg-pr" style="width:10px; height:10px; border-radius:50%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-grow-1 bg-danger flex-center" *ngIf="chats && chats.length == 0">
+                    <p class="text-black text-center">Aucune Discussion</p>
+                </div>
+            </ng-container>
+        </div>
+        <div class="px-0 col-md-8 col-sm-12 discussion " *ngIf="currentChat">
+            <div class="ps-1 flex-grow-1 discussion-body">
+                <div class="message-item my-2"  
+                [ngClass]="{
+                    'isAdmin': message.isAdminMessage === true, 
+                    'isUser': message.isAdminMessage === false || !message.isAdminMessage,
+                    'reported-message': message.isReported}"
+                *ngFor="let message of chatConversation">
+
+                <!-- Check if it's the reported message -->
+                 <ng-container *ngIf="message.isReported">
+                            <div class="reported-info">
+                        <span>
+                            <span class="message-subject-label">{{messageSubjectLabel}}</span>
+                            <span class="message-subject">{{messageSubject}}</span>
+                        </span><br>
+            
+                        <span>
+                            <span class="message-message-label">{{messageMessageLabel}}</span>
+                            <span class="message-message">{{messageMessage}}</span>
+                        </span>
+                    </div>
+                </ng-container>
+
+                 <!-- For other messages -->
+                 <ng-container *ngIf="!message.isReported">
+                    <p class="mb-1" [innerHTML]="message.text" style="white-space: pre-line;"></p>
+                    <div class="d-flex chat-media"  [ngClass]="{
+                        'chat-media-admin': message.isAdminMessage === true, 
+                        'chat-media-user': message.isAdminMessage === false || !message.isAdminMessage}">
+                        <img *ngIf="message.image" src="{{message.image}}" alt="" style="width:50%; height:auto;">
+                    </div>
+                </ng-container>
+    
+                <span class="message-time">{{message.timestamp.toMillis() | date: "dd-MM-YY HH:mm"}}</span>
+                </div>
+            </div>
+            <div class="flex-grow-0 message-send">
+                <div class="row send-container">
+                        <div class="col-11">
+                            <textarea [(ngModel)]="message" class="message-text w-100" name="message" id="" rows="3" draggable="false"></textarea>
+                        </div>
+                        <div class="col-1 flex-center flex-column">
+                            <button mat-icon-button (click)="sendMessage()"class="sendmessagebouton text-white"><mat-icon>send</mat-icon></button>
+                        </div>
+                </div>
+               
+            </div>
+           
+        </div>
+        <div class="px-0 col-md-8 col-sm-12 discussion text-white flex-center" *ngIf="!currentChat">
+            
+                Veuillez sélectionner la conversation à afficher
+           
+        </div>
+    </div>
+    
+</div>

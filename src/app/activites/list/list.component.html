@@ -1,0 +1,111 @@
+<div class="px-3">
+    <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap g-2">
+    
+        <mat-form-field style="min-width:300px !important;" appearance="outline" class="searchList"> 
+            <mat-icon class="searchListIcon"matPrefix>search</mat-icon>
+            <input matInput placeholder="Chercher par nom/numero de serie" #input  [(ngModel)]="searchuser" [ngModelOptions]="{standalone: true}" >
+        </mat-form-field>
+        <div class="form-group">
+            <!--      <label for="exampleFormControlSelect1">Example select</label> -->
+            <select class="form-control"   (change)="onChange($event)" id="exampleFormControlSelect1" style="min-width:100px;height:48px; border-radius: 10px ;">
+              <option value="0">Type d’activité</option>
+              <option *ngFor="let item of types" value="{{item.type_fr}}">{{item.type_fr}}</option>
+             
+            </select>
+          </div>
+
+          <form  [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form" fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field  class="searchList"  fxFlex fxFlex="100" appearance="fill">
+                        <mat-label>Date </mat-label>
+                        <mat-date-range-input
+                        [rangePicker]="periode_historyPicker">
+                        <input matStartDate [min]="minDate" [max]="maxDate" placeholder="Date de début" formControlName="start" >
+                        <input matEndDate [min]="minDate" [max]="maxDate" placeholder="Date de fin" formControlName="end">
+                        </mat-date-range-input>
+                        <a mat-icon-button matPrefix (click)="periode_historyPicker.open(); $event.stopPropagation();">
+                            <mat-icon class="text-green">today</mat-icon>
+                        </a>
+                        <button mat-icon-button matSuffix class="bg-white" type="submit" [disabled]="!formGroup.valid">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                          <mat-icon *ngIf="!loading">done</mat-icon></button>
+                        <mat-date-range-picker #periode_historyPicker></mat-date-range-picker>
+                </mat-form-field>
+          </form>
+          <button mat-icon-button (click)="resetSearch()" class="bg-white" aria-label="Réinitialiser la recherche">
+            <mat-icon>refresh</mat-icon>
+          </button>
+
+    </div>
+    
+    <div class="flex-grow-1 mt-5">
+       <div class="row" >
+        <div class="col-md-8 col-sm-12">
+            <mat-card *ngFor="let item of activitiesFiltered | filter: searchuser" (click)="setCurrentUser(item.created_by.id)" class="card-activity cursor-pointer mb-5 p-2">
+                      <!-- Context menu for delete button-->
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="deleteActivity(item.id)">
+          <mat-icon>delete</mat-icon>
+          <span>Supprimer l'activité</span>
+        </button>
+      </mat-menu>
+      <div style="text-align: right;">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+                <p class="activityId">Code: <span class="text-pr fw-bold">{{item.id |  uppercase | slice:0:16 }}</span></p>
+                <p class="name"><span class="fw-bold">{{item.nom}}</span></p>
+    
+                <p class="type">Type d'activité : <span class="activityType">{{item.typeName}}</span></p>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p class="date d-flex justify-content-start align-items-center">
+                         Date: <span class="datePill text-black flex-center">   <mat-icon>calendar_month</mat-icon>{{item.date.toMillis() | date :"dd/MM/YY"}} </span> </p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <p class="date d-flex justify-content-start align-items-center">
+                         Heure: <span class="datePill text-black flex-center">   <mat-icon>calendar_month</mat-icon>{{item.date.toMillis() | date :"hh:mm"}} </span> </p>
+                    </div>
+                </div>
+                <p class="address">Lieu : <span class="address">{{item.address}}</span></p>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <p class="ageMin">Age Min: {{item.age_min}}</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <p class="ageMax">Age Max: {{item.age_max}}</p>
+                    </div>
+                </div>
+                <p class="authorizedGenders">Ouvert aux : <span class="blackPill me-2" *ngFor="let elt of item.authorized_genders">{{elt}}</span></p>
+                <p class="languages">Langues : <span class="blackPill me-2" *ngFor="let language of item.languageNames">{{language}}</span></p>
+                <p class="description">Description : <span class="" >{{item.description | slice: 1:200}}</span></p>
+                <p class="mb-2"> Participants: </p>
+                <div class="d-flex flex-wrap">
+                    <div *ngFor="let p of item.participants;let i = index" class="" style="width:80px; font-size:8px;">
+                        <ng-container *ngIf="i < 6">  
+                            <img  class="cursor-pointer profile-picture" src="{{p.userData.photo_url && p.userData.photo_url != ''? p.userData.photo_url : defaultPicUrl}}" alt="">
+                            <p class="mt-1">{{ p.userData.display_name}}</p>
+                        </ng-container>
+                     
+                    </div>
+                </div>
+                <div *ngIf="item.participants.length == 0" class="" style="">
+                   <p class="text-center text-pr">Aucun participant pour le moment</p>
+                </div>
+             
+            </mat-card>
+            <mat-card  *ngIf="activitiesFiltered && activitiesFiltered.length == 0"  class="card-activity cursor-pointer mb-2 p-2">
+                <div class="flex-center" style="min-height:150px;">
+                    <p class="text-center">Aucune activité</p>
+                 </div>
+            </mat-card>
+            <div class="" *ngIf="loading$ | async">
+                <div class="spinner-container d-flex justify-content-center align-items-center" *ngIf="loading$ | async">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </div>
+        </div>    
+       </div>
+      
+    </div>
+</div>

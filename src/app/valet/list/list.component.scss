@@ -1,0 +1,29 @@
+.kpi-card{
+    padding:16px 12px !important;
+    border-top: solid 5px var(--meet-pr);
+
+    .kpi-title{
+        font-weight:500;
+        font-size:18px;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom:5px;
+    }
+    .kpi-value{
+        font-weight:700;
+        font-size:28px;
+        margin-bottom:0px;
+        text-align: center;
+        color: var(--meet-bl);
+    }
+    .kpi-details{
+        font-weight:500;
+        color: var(--meet-bl);
+        font-size:14px;
+        text-align: right;
+        margin-bottom:0;
+    }
+}
+/* .kpi-card:nth-child(odd){
+    border-top: solid 5px var(--meet-pr);
+} */

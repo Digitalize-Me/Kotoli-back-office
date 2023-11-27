@@ -1,0 +1,155 @@
+<div class="bg-white px-3" ><!-- style="height: calc(100vh - 150px);" -->
+    <h2 class="card-title">
+        Valets
+    </h2>
+    <div class="row">
+        <div class="col-md-3 col-sm-6">
+            <mat-card class="kpi-card">
+            <h4 class="kpi-title">Total</h4>
+            <h3 class="kpi-value">32</h3>
+          <!--   <p class="kpi-details">Détails</p> -->
+            </mat-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <mat-card class="kpi-card">
+            <h4 class="kpi-title">En Mission</h4>
+            <h3 class="kpi-value">16</h3>
+            </mat-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <mat-card class="kpi-card">
+            <h4 class="kpi-title">Dispos</h4>
+            <h3 class="kpi-value">10</h3>
+            </mat-card>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <mat-card class="kpi-card">
+            <h4 class="kpi-title">Inactifs</h4>
+            <h3 class="kpi-value">6</h3>
+            </mat-card>
+        </div>
+    </div>
+    <div class="m-2 d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex justify-content-start gap-2 flex-wrap align-items-center">
+            <button mat-raised-button class="bg-pr" routerLink="../affectations"><mat-icon>add</mat-icon>Affectations</button>
+            <button mat-raised-button class="bg-pr" routerLink="../affectations"><mat-icon>groups</mat-icon>Suivi des paiements</button>
+            <button mat-raised-button class="bg-pr" aria-label="Exporter Excel Liste" (click)="exportToExcel()"><mat-icon>file_download</mat-icon> Excel</button>
+        </div>
+        
+    
+    
+        <mat-form-field appearance="outline" class="searchList"> 
+            <mat-icon matSuffix>search</mat-icon>
+            <input matInput placeholder="Rechercher ..." #input (keyup)="searchData(input.value)">
+        </mat-form-field>
+    </div>
+    <div class="flex-grow-1">
+   <!--      <mat-table class="bg-white mat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="creationTime" matSortDirection="desc" >
+
+            <ng-container matColumnDef="code">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+                <mat-cell class="text-pr text-underline cursor-pointer" (click)="show(data)" *matCellDef="let data">{{data.code}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="state">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
+                <mat-cell *matCellDef="let data">
+                    <span *ngIf="data.state =='STATUS_CANCELLED'" class="state-block cancelled-block">Annulée</span>
+                    <span *ngIf="data.state =='STATUS_CREATED'" class="state-block created-block">Crée</span>
+                    <span *ngIf="data.state =='STATUS_DELIVERED'"class="state-block delivered-block">Livrée</span>
+                    <span *ngIf="data.state =='STATUS_DELIVERING'"class="state-block delivering-block">En livraison</span>
+                    <span *ngIf="data.state =='STATUS_IN_PROGRESS'" class="state-block inprogress-block">En cours</span>
+                    <span *ngIf="data.state =='STATUS_PREPARING'" class="state-block preparing-block">En préparation</span>
+                    <span *ngIf="data.state =='STATUS_READY'" class="state-block ready-block">Prête</span>
+                    <span *ngIf="data.state =='STATUS_REFUSED'" class="state-block refused-block">Refusée</span>
+                    <span *ngIf="data.state =='STATUS_VALIDATED'" class="state-block validated-block">Validée</span>
+                    <span *ngIf="data.state =='STATUS_ERROR_PAYMENT'" class="state-block errorpayment-block"> Erreur paiement</span>
+                    </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="deliveryMan">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Livreur</mat-header-cell>
+                <mat-cell *matCellDef="let data">
+                    {{(data.deliveryMan ? data.deliveryMan : "Non affecté" )}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="pickupAddress.libeleMagasin">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Magasin</mat-header-cell>
+                <mat-cell *matCellDef="let data">{{(data.pickupAddress ? data.pickupAddress.libeleMagasin : "Non défini" ) | uppercase}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="destinationAddress.address" tyle="width:100px;">
+                <mat-header-cell *matHeaderCellDef  style="width:100px;" mat-sort-header>Adresse</mat-header-cell>
+                <mat-cell *matCellDef="let data"  style="width:100px;"><p>{{data.destinationAddress.address}}</p></mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="payment.price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Prix</mat-header-cell>
+                <mat-cell *matCellDef="let data">
+                    <div class="w-100">
+                        <h3 class="mb-1 price">{{data.payment.price | number : '1.2-2'}} DH</h3>
+                        <p class="mb-0 method text-pr onDelivery" *ngIf="data.payment.method == 'onDelivery'" >À la livraison</p>
+                        <p class="mb-0 method text-blue online" *ngIf="data.payment.method == 'online'" >En ligne</p>
+                        
+                    </div>
+                </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="creationTime.seconds">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+                <mat-cell *matCellDef="let data">{{data.creationTime.toMillis()| date: 'dd/MM/YYYY'}}</mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="creationTime.nanoseconds">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Crée le</mat-header-cell>
+                <mat-cell *matCellDef="let data">{{data.creationTime.toMillis() | date: 'HH:mm'}}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="confirmedAt.nanoseconds">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Confirmée à</mat-header-cell>
+                <mat-cell *matCellDef="let data">
+                    <span  *ngIf="data.confirmedAt">{{data.confirmedAt.toMillis() | date: ' dd/MM HH:mm'}}</span>
+                    <span  *ngIf="!data.confirmedAt">N/D</span>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="finishedAt.nanoseconds">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Terminée à</mat-header-cell>
+                <mat-cell *matCellDef="let data">
+                    <span  *ngIf="data.finishedAt">{{data.finishedAt.toMillis() | date: ' dd/MM HH:mm'}}</span>
+                    <span  *ngIf="!data.finishedAt">N/D</span>
+                </mat-cell>
+                <mat-cell *matCellDef="let data">{{data.finishedAt.toMillis() | date: ' dd/MM HH:mm'}}</mat-cell>
+            </ng-container>
+        
+        
+            <ng-container matColumnDef="action" sticky>
+                <mat-header-cell class="header-cell-icon" *matHeaderCellDef>Action</mat-header-cell>
+                <mat-cell class="cell-icon cursor-pointer" *matCellDef="let data" [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                    <mat-icon>more_vert</mat-icon>
+                    <mat-menu #menu="matMenu" yPosition="below">
+                        <button mat-menu-item (click)="show(data)">
+                            <mat-icon>info</mat-icon>
+                            <span>Afficher le détail</span>
+                        </button>
+                        
+                        <button mat-menu-item (click)="true"  *ngIf='data.state == "STATUS_DELIVERING"' >
+                            <mat-icon>check</mat-icon>
+                            <span>Forcer la clôture de la livraison</span>
+                       </button>
+                       
+                    </mat-menu>
+                </mat-cell>
+            </ng-container>
+        
+            <mat-header-row *matHeaderRowDef="displayedColumns" ></mat-header-row>
+            
+            
+        
+            <mat-row *matRowDef="let row; columns: displayedColumns"> 
+                
+            </mat-row>
+            
+        
+        </mat-table>
+        <div class="spinner-container d-flex justify-content-center align-items-center" *ngIf="loading$ | async">
+            <mat-spinner></mat-spinner>
+        </div>
+        <mat-paginator #pagin [pageSizeOptions]="[25,50,100]" showFirstLastButtons></mat-paginator>
+ -->
+    </div>
+</div>
